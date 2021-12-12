@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Laravel\Passport\Passport;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+
 
 class passportAuthController extends Controller
 {
@@ -25,7 +27,8 @@ class passportAuthController extends Controller
         ]);
 
         $access_token = $user->createToken('passport')->accessToken;
-        return response()->json(['token'=>$access_token],201);
+        event(new Registered($user));
+        return response()->json(['token'=>$access_token, 'message'=>'Please Verify your account through the email sent to you'],201);
     }
 
     /**
