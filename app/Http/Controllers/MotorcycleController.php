@@ -12,6 +12,7 @@ use Validator;
 class MotorcycleController extends Controller
 {
 
+    // Store product into db
     public function store(Request $request)
     {
         $motorcycle = new Motorcycle;
@@ -26,6 +27,7 @@ class MotorcycleController extends Controller
         return response()->json($motorcycle,201);
     }
 
+    // mark item as sold
     public function soldItem(Request $request, Motorcycle $motorcycle)
     {
 
@@ -39,6 +41,7 @@ class MotorcycleController extends Controller
         return response()->json(['Motocycle Updated Successfully'], 200);
     }
 
+    // get all available products
     public function index()
     {
         $products = Motorcycle::with(['images','user'])->where('sold',0)->get();
