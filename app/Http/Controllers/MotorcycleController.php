@@ -15,6 +15,13 @@ class MotorcycleController extends Controller
     // Store product into db
     public function store(Request $request)
     {
+        $request->validate([
+            'model' => 'required|string',
+            'make' => 'required|string',
+            'year' => 'required|int',
+            'description' => 'required|string',
+        ]);
+
         $motorcycle = new Motorcycle;
 
         $motorcycle->model = $request->model;
