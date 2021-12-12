@@ -11,6 +11,7 @@ This task aims to build an API that get data from Motorcycle owners and show it 
     php artisan migrate
     php artisan passport:install
     php artisan serve
+    php artisan queue:work
 ```
 
 ## API routes :
@@ -41,7 +42,7 @@ This task aims to build an API that get data from Motorcycle owners and show it 
     Route : /api/products/
     Method : GET
     Response :
-        200 success : [products]
+        200 success : [message:"redis/database", data]
 ```
 
 ### Post a product 

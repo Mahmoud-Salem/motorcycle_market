@@ -57,18 +57,16 @@ class MotorcycleController extends Controller
             $products = json_decode($cachedProducts, FALSE);
       
             return response()->json([
-                'status_code' => 200,
                 'message' => 'Fetched from Redis',
                 'data' => $products,
-            ]);
+            ],200);
         }else {
             $products = Motorcycle::with(['images','user'])->where('sold',0)->get();
             Redis::set('products', $products,'EX',1);
             return response()->json([
-                'status_code' => 200,
                 'message' => 'Fetched from Database',
                 'data' => $products,
-            ]);
+            ],200);
         }
     }
 
