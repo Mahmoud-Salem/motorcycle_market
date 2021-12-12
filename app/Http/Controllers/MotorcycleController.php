@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Motorcycle;
 use App\Models\Images;
 use App\Models\User;
+use Illuminate\Support\Facades\Redis;
 
 use Validator;
 
@@ -51,8 +52,24 @@ class MotorcycleController extends Controller
     // get all available products
     public function index()
     {
-        $products = Motorcycle::with(['images','user'])->where('sold',0)->get();
-        return $products;
+        $cachedProducts = Redis::get('products');
+        if(isset($cachedProducts)) {
+            $products = json_decode($cachedProducts, FALSE);
+      
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Fetched from Redis',
+                'data' => $products,
+            ]);
+        }else {
+            $products = Motorcycle::with(['images','user'])->where('sold',0)->get();
+            Redis::set('products', $products,'EX',1);
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Fetched from Database',
+                'data' => $products,
+            ]);
+        }
     }
 
 }
